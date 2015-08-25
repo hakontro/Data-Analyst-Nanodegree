@@ -182,7 +182,7 @@ H_0:\mu_D \le 0\\
 H_A:\mu_D > 0
 $$<h4 id="The-corresponding-t-value-will-be-defined-as">The corresponding t-value will be defined as<a class="anchor-link" href="#The-corresponding-t-value-will-be-defined-as">&#182;</a></h4>$$
 t = \frac{\bar{X_D}-\mu_0}{S_D/\sqrt{n}}
-$$<h4 id="Where-$\bar{X_D}$-is-the-mean-of-the-sample-differences,-and-$S_D/\sqrt{n}$-the-sample-standard-error.-$\mu_0$-is-0-as-we're-looking-to-compare-whether-the-results-on-the-tests-are-the-same,-not-whether-one-has-a-certain-offset-from-the-other-test.">Where $\bar{X_D}$ is the mean of the sample differences, and $S_D/\sqrt{n}$ the sample standard error. $\mu_0$ is 0 as we're looking to compare whether the results on the tests are the same, not whether one has a certain offset from the other test.<a class="anchor-link" href="#Where-$\bar{X_D}$-is-the-mean-of-the-sample-differences,-and-$S_D/\sqrt{n}$-the-sample-standard-error.-$\mu_0$-is-0-as-we're-looking-to-compare-whether-the-results-on-the-tests-are-the-same,-not-whether-one-has-a-certain-offset-from-the-other-test.">&#182;</a></h4><h4>To reject the null hypothesis, we look up the one sided t-value for significance $p<0.05$ and sample size 25 (24 degrees of freedom) and find $t>1.71$.</h4>
+$$<h4 id="Where-$\bar{X_D}$-is-the-mean-of-the-sample-differences,-and-$S_D/\sqrt{n}$-the-sample-standard-error.-$\mu_0$-is-0-as-we're-looking-to-compare-whether-the-results-on-the-tests-are-the-same,-not-whether-one-has-a-certain-offset-from-the-other-test.">Where $\bar{X_D}$ is the mean of the sample differences, and $S_D/\sqrt{n}$ the sample standard error. $\mu_0$ is 0 as we're looking to compare whether the results on the tests are the same, not whether one has a certain offset from the other test.<a class="anchor-link" href="#Where-$\bar{X_D}$-is-the-mean-of-the-sample-differences,-and-$S_D/\sqrt{n}$-the-sample-standard-error.-$\mu_0$-is-0-as-we're-looking-to-compare-whether-the-results-on-the-tests-are-the-same,-not-whether-one-has-a-certain-offset-from-the-other-test.">&#182;</a></h4><h4>To reject the null hypothesis, we look up the one sided t-value for significance $p<0.05$ and sample size 24 (23 degrees of freedom) and find $t>1.714$.</h4>
 
 </div>
 </div>
@@ -198,7 +198,7 @@ $$<h4 id="Where-$\bar{X_D}$-is-the-mean-of-the-sample-differences,-and-$S_D/\sqr
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="c"># Causes plots to display within the notebook rather than in a new window</span>
@@ -226,7 +226,7 @@ $$<h4 id="Where-$\bar{X_D}$-is-the-mean-of-the-sample-differences,-and-$S_D/\sqr
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
@@ -806,19 +806,19 @@ RCRAFOoiIgGiUBcRCRCFuohIgCjURUQCRKEuIhIgCnURkQD5/zF8MbVCZlglAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">X_D</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;Incongruent&#39;</span><span class="p">]</span><span class="o">-</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;Congruent&#39;</span><span class="p">])</span>
 <span class="n">X_Dmean</span> <span class="o">=</span> <span class="n">X_D</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">S_D</span> <span class="o">=</span> <span class="n">X_D</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
 <span class="n">mu_0</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">df</span> <span class="o">=</span> <span class="mi">24</span>
+<span class="n">df</span> <span class="o">=</span> <span class="mi">23</span>
 <span class="k">print</span> <span class="s">&quot;The mean difference between the test scores for the Incongruent and Congruent test is:&quot;</span> 
 <span class="k">print</span> <span class="n">X_Dmean</span>
 <span class="n">s_C</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;Congruent&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">s_I</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;Incongruent&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">denominator</span> <span class="o">=</span> <span class="n">S_D</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span>
+<span class="n">denominator</span> <span class="o">=</span> <span class="n">S_D</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span>
 <span class="k">print</span> <span class="s">&quot;The denominator of the t-equation is:&quot;</span>
 <span class="k">print</span> <span class="n">denominator</span>
 
@@ -840,9 +840,9 @@ RCRAFOoiIgGiUBcRCRCFuohIgCjURUQCRKEuIhIgCnURkQD5/zF8MbVCZlglAAAAAElFTkSuQmCC
 <pre>The mean difference between the test scores for the Incongruent and Congruent test is:
 7.96479166667
 The denominator of the t-equation is:
-0.972965382072
+0.993028634778
 And finally our t-value is: 
-8.18609974561
+8.02070694411
 </pre>
 </div>
 </div>
@@ -856,8 +856,8 @@ And finally our t-value is:
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4>The t-value 8.18 is way outside what we stated as $p<0.05$, and so $H_0$ is rejected.</h4>
-<h4 id="In-conclusion,-it-seems-that-individuals-take-more-timeidentifying-the-color-of-a-word-when-the-letters-spell-a-different-color.">In conclusion, it seems that individuals take more timeidentifying the color of a word when the letters spell a different color.<a class="anchor-link" href="#In-conclusion,-it-seems-that-individuals-take-more-timeidentifying-the-color-of-a-word-when-the-letters-spell-a-different-color.">&#182;</a></h4><h4 id="It's-also-likely,-given-that-all-of-the-25-individuals-spent-more-time-identifying-the-incongruent-words-than-the-congruent-words.">It's also likely, given that all of the 25 individuals spent more time identifying the incongruent words than the congruent words.<a class="anchor-link" href="#It's-also-likely,-given-that-all-of-the-25-individuals-spent-more-time-identifying-the-incongruent-words-than-the-congruent-words.">&#182;</a></h4><h4 id="Being-familiar-with-the-concept-from-before,-this-was-as-I-expected.">Being familiar with the concept from before, this was as I expected.<a class="anchor-link" href="#Being-familiar-with-the-concept-from-before,-this-was-as-I-expected.">&#182;</a></h4>
+<h4>The t-value 8.02 is way outside what we stated as $p<0.05$, and so $H_0$ is rejected.</h4>
+<h4 id="In-conclusion,-it-seems-that-individuals-take-more-timeidentifying-the-color-of-a-word-when-the-letters-spell-a-different-color.">In conclusion, it seems that individuals take more timeidentifying the color of a word when the letters spell a different color.<a class="anchor-link" href="#In-conclusion,-it-seems-that-individuals-take-more-timeidentifying-the-color-of-a-word-when-the-letters-spell-a-different-color.">&#182;</a></h4><h4 id="It's-also-likely,-given-that-all-of-the-24-individuals-spent-more-time-identifying-the-incongruent-words-than-the-congruent-words.">It's also likely, given that all of the 24 individuals spent more time identifying the incongruent words than the congruent words.<a class="anchor-link" href="#It's-also-likely,-given-that-all-of-the-24-individuals-spent-more-time-identifying-the-incongruent-words-than-the-congruent-words.">&#182;</a></h4><h4 id="Being-familiar-with-the-concept-from-before,-this-was-as-I-expected.">Being familiar with the concept from before, this was as I expected.<a class="anchor-link" href="#Being-familiar-with-the-concept-from-before,-this-was-as-I-expected.">&#182;</a></h4>
 </div>
 </div>
 </div>
