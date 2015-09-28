@@ -1,0 +1,1 @@
+http://effbot.org/zone/element-iterparse.htm#incremental-parsing

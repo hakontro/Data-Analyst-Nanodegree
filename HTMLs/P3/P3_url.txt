@@ -1,0 +1,4 @@
+http://www.openstreetmap.org/export#map=13/59.9268/10.7522
+
+Originally wanted to go for my hometown Oslo, Norway, "Ring 2" (inner road circle), 
+but it was a bit too small so I extended the area a bit to the north-west.
