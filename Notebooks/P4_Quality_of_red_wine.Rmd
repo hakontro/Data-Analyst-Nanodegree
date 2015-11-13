@@ -6,6 +6,10 @@
 
 ========================================================
 
+```{r global_options, include=FALSE}
+  knitr::opts_chunk$set(echo=FALSE, warning=FALSE, message=FALSE)
+```
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE, packages}
 # Load all of the packages that you end up using
 # in your analysis in this code chunk.
@@ -55,7 +59,8 @@ The quality seems to be approximately normally distributed around 5.5. Interesti
 #Alcohol
 ggplot(aes(x=alcohol),data=rw) + 
   geom_histogram(binwidth=0.1)+
-  scale_x_continuous(limits=c(8,15),breaks=seq(8,15,0.5))
+  scale_x_continuous(limits=c(8,15),
+                     breaks=seq(8,15,0.5))
 ```
 
 Alcohol seems to have more of a skewed distribution, where most of the wines are somewhere in the range of 9 to 12%. Alcohol percentage is something that many people claim to be able to taste, it's gonna be interesting to see how this influences the quality.
@@ -64,7 +69,8 @@ Alcohol seems to have more of a skewed distribution, where most of the wines are
 #Residual sugar
 ggplot(aes(x=residual.sugar),data=rw) + 
   geom_histogram(binwidth=0.1)+
-  scale_x_continuous(limits=c(0,16),breaks=seq(0,16,1))
+  scale_x_continuous(limits=c(1,5),
+                     breaks=seq(1,5,0.5))
 
 summary(rw['residual.sugar'])
 ```
@@ -75,21 +81,24 @@ Almost all of the sugar levels are in the range 1 to 3, but the other values can
 #Fixed acidity
 ggplot(aes(x=fixed.acidity),data=rw) + 
   geom_histogram(binwidth=0.3)+
-  scale_x_continuous(limits=c(4,16),breaks=seq(4,16,1))
+  scale_x_continuous(limits=c(4,16),
+                     breaks=seq(4,16,1))
 ```
 
 ```{r echo=FALSE}
 #Volatile acidity
 ggplot(aes(x=volatile.acidity),data=rw) + 
   geom_histogram(binwidth=0.03)+
-  scale_x_continuous(limits=c(0,1.6),breaks=seq(0,1.6,0.25))
+  scale_x_continuous(limits=c(0,1.6),
+                     breaks=seq(0,1.6,0.25))
 ```
 
 ```{r echo=FALSE}
 #Citric acid
 ggplot(aes(x=citric.acid),data=rw) + 
   geom_histogram(binwidth=0.01)+
-  scale_x_continuous(limits=c(0,1),breaks=seq(0,1,0.25))
+  scale_x_continuous(limits=c(0,1),
+                     breaks=seq(0,1,0.25))
 ```
 
 It's hard to believe that the wine tasters are able to taste the difference between three acids, and so I'll look into correlations between the three, and also how they relate to quality on their own and in common. Acids can obviously correlate with other qualities in wine though, so I'm not sure what to expect.
@@ -99,7 +108,8 @@ Citric acid has two spikes, at 0 and 0.5. I speculate that thisis due to roundin
 #Chlorides
 ggplot(aes(x=chlorides),data=rw) + 
   geom_histogram(binwidth=0.003)+
-  scale_x_continuous(limits=c(0,0.2),breaks=seq(0,0.2,0.02))
+  scale_x_continuous(limits=c(0,0.2),
+                     breaks=seq(0,0.2,0.02))
 ```
 
 Chloride distribution looks pretty neat and normal, and saltiness is something I believe humans can taste pretty well. Beginning to notice a trend in histograms where the outliers are mostly on the higher end.
@@ -108,12 +118,14 @@ Chloride distribution looks pretty neat and normal, and saltiness is something I
 #Free sulfur dioxide
 ggplot(aes(x=free.sulfur.dioxide),data=rw) + 
   geom_histogram(binwidth=1)+
-  scale_x_continuous(limits=c(0,100),breaks=seq(0,100,5))
+  scale_x_continuous(limits=c(0,100),
+                     breaks=seq(0,100,5))
 
 #Total sulfur dioxide
 ggplot(aes(x=total.sulfur.dioxide),data=rw) + 
   geom_histogram(binwidth=2)+
-  scale_x_continuous(limits=c(0,200),breaks=seq(0,200,10))
+  scale_x_continuous(limits=c(0,200),
+                     breaks=seq(0,200,10))
 ```
 
 The distribution of the ammount of sulfur dioxide in the wine is very heavy tailed on the left side, so let's have a look at its log transform.
@@ -121,7 +133,7 @@ The distribution of the ammount of sulfur dioxide in the wine is very heavy tail
 ```{r echo=FALSE}
 ggplot(aes(x=log(total.sulfur.dioxide)),data=rw) + 
   geom_histogram(binwidth=0.1)+
-  scale_x_continuous(limits=c())
+  scale_x_continuous()
 ```
 
 Seems to be more normal now. Once again, I believe these two will be related just like the acids. Total sulfur dioxide of course contains all the free dioxide, and we'll see how they differ later on.
@@ -130,7 +142,8 @@ Seems to be more normal now. Once again, I believe these two will be related jus
 #pH
 ggplot(aes(x=pH),data=rw) + 
   geom_histogram(binwidth=0.02)+
-  scale_x_continuous(limits=c(3,5),breaks=seq(3,5,0.1))
+  scale_x_continuous(limits=c(3,5),
+                     breaks=seq(3,5,0.1))
 ```
 
 Sourness, like sweetness and saltiness, should be something that influences the taste of the win. I expect this to be a significant factor towards quality.
@@ -139,7 +152,8 @@ Sourness, like sweetness and saltiness, should be something that influences the 
 #Sulphates
 ggplot(aes(x=sulphates),data=rw) + 
   geom_histogram(binwidth=0.04)+
-  scale_x_continuous(limits=c(0,2),breaks=seq(0,2,0.4))
+  scale_x_continuous(limits=c(0,2),
+                     breaks=seq(0,2,0.4))
 ```
 
 I remember from chemistry that sulfates typically taste and smell very strongly. The amount seems fairly normally distributed, so it'll be interesting to have a look at the correlation as well as the outliers here.
@@ -172,7 +186,10 @@ We see that some of the values correlate pretty strongly, like citric and Volati
 
 ```{r echo=FALSE}
 
-ggpairs(rw,columns=c(13,3,9,10,12), title = "Pair plot", params = c(shape = I('.'), outlier.shape = I('.')),corSize=8) + ggplot2::theme_bw()
+ggpairs(rw,columns=c(13,3,9,10,12), 
+        title = "Pair plot", 
+        params = c(shape = I('.'), outlier.shape = I('.')),corSize=8) + 
+  ggplot2::theme_bw()
 ```
 
 
@@ -181,21 +198,24 @@ This plot gives a lot of information, and I'll explore some of it further instea
 
 ```{r echo=FALSE}
 ggplot(aes(x=quality,y=residual.sugar),data=rw) + 
-  geom_point(position="jitter",alpha = 0.7,color=I("Red"))
+  geom_point(position="jitter",
+             alpha = 0.7,
+             color=I("Red"))
 ```
 
 Nearly all wines with the higher sugar ammounts are quality 5, 6 or 7. It's easy to get tricked here, but notice that most wines in total are also 5,6 or 7. There's a qualty 4 wine with a really high ammount of sugar as welll, and it's not easy to conclude whether what we're seeing is some sort of correlation, or simply the fact that there are so many more wines with quality 5 or 6.
 
 ```{r echo=FALSE}
 ggplot(aes(factor(quality),residual.sugar),data=rw) + 
-  geom_boxplot(aes(fill=factor(quality))) 
+  geom_boxplot() 
 ```
 
 Looking at the box plot, we do see that qualities 3,4 and 8 have slightly lower means than 5,6 and 7, but nothing major.
 
 ```{r echo=FALSE}
 ggplot(aes(x=quality,y=alcohol),data=rw) + 
-  geom_point(position="jitter",alpha = 0.7,color=I("Blue"))
+  geom_point(position="jitter",
+             alpha = 0.7,color=I("Blue"))
 
 ```
 
@@ -203,7 +223,7 @@ In this plot, we see more of a trend. It looks as if, in general, high quality w
 
 ```{r echo=FALSE}
 ggplot(aes(factor(quality),alcohol),data=rw) + 
-  geom_boxplot(aes(fill=factor(quality))) 
+  geom_boxplot() 
 ```
 
 The box plot makes it even more obvious, especially from 5 through 8 there's a higher ammount of alcohol in the better wines. Let's look at the correlations both with and without the lower quality wines.
@@ -217,7 +237,8 @@ As we can see, the correlation factor is quite high, and actually quite a lot hi
 
 ```{r echo=FALSE}
 ggplot(aes(x=quality,y=chlorides),data=rw) + 
-  geom_point(position="jitter",alpha = 0.7,color=I("Purple"))
+  geom_point(position="jitter",
+             alpha = 0.7,color=I("Purple"))
 
 ```
 
@@ -226,13 +247,14 @@ It's the same thing with this plot as with the sugar one, the differences we obs
 
 ```{r echo=FALSE}
 ggplot(aes(factor(quality),chlorides),data=rw) + 
-  geom_boxplot(aes(fill=factor(quality))) 
+  geom_boxplot() 
 ```
 
 
 ```{r echo=FALSE}
 ggplot(aes(x=quality,y=pH),data=rw) + 
-  geom_point(position="jitter",alpha = 0.7,color=I("Orange"))
+  geom_point(position="jitter",
+             alpha = 0.7,color=I("Orange"))
 
 ```
 
@@ -240,7 +262,7 @@ This has a different distribution than the others, and if we scroll back up to l
 
 ```{r echo=FALSE}
 ggplot(aes(factor(quality),pH),data=rw) + 
-  geom_boxplot(aes(fill=factor(quality))) 
+  geom_boxplot() 
 ```
 
 Looking at the boxplot, there seems to be a trend towards higher quality meaning also lower pH. However, the correlation factor between the two is only -0.0577.
@@ -248,26 +270,28 @@ Looking at the boxplot, there seems to be a trend towards higher quality meaning
 
 ```{r echo=FALSE}
 ggplot(aes(x=quality,y=sulphates),data=rw) + 
-  geom_point(position="jitter",alpha = 0.7,color=I("Black"))
+  geom_point(position="jitter",
+             alpha = 0.7,color=I("Black"))
 ```
 
 We see some sort of linear trend again, for example not a single one of the really good wines have a low ammount of sulphates.
 
 ```{r echo=FALSE}
 ggplot(aes(factor(quality),sulphates),data=rw) + 
-  geom_boxplot(aes(fill=factor(quality))) 
+  geom_boxplot() 
 ```
 
 The boxplot tells the same story!
 
 ```{r echo=FALSE}
 ggplot(aes(x=quality,y=volatile.acidity),data=rw) + 
-  geom_point(position="jitter",alpha = 0.7,color=I("Red"))
+  geom_point(position="jitter",
+             alpha = 0.7,color=I("Red"))
 ```
 
 ```{r echo=FALSE}
 ggplot(aes(factor(quality),volatile.acidity),data=rw) + 
-  geom_boxplot(aes(fill=factor(quality))) 
+  geom_boxplot() 
 ```
 
 ```{r echo=FALSE}
@@ -287,7 +311,8 @@ ggplot(aes(x=factor(round_any(fixed.acidity,2.5)),volatile.acidity),data=rw) +
 ```{r echo=FALSE}
 ggplot(aes(x=citric.acid,y=fixed.acidity,color = quality),data=rw) + 
   geom_point() + 
-  scale_x_continuous(limits=c(0,0.75),breaks=seq(0,0.75,0.1))
+  scale_x_continuous(limits=c(0,0.75),
+                     breaks=seq(0,0.75,0.1))
 ```
 
 This trend is clearer: there's some relationship between fixed and citric acid. It could be approximately linear, or one could use a polynomial  or exponential function.
@@ -296,8 +321,13 @@ This trend is clearer: there's some relationship between fixed and citric acid. 
 
 ggplot(aes(x=citric.acid,y=fixed.acidity,color = quality),data=rw) + 
   geom_point(alpha = 0.7) + 
-  stat_smooth(method="lm",se = FALSE,size=1,color = "green") + 
-  stat_smooth(method="lm", formula= y ~ poly(x,2) ,se = FALSE,color = "orange",size = 1) + 
+  stat_smooth(method="lm",
+              se = FALSE,
+              size=1,color = "green") + 
+  stat_smooth(method="lm", 
+              formula= y ~ poly(x,2) ,
+              se = FALSE,
+              color = "orange",size = 1) + 
   scale_x_continuous(limits=c(0,0.75),breaks=seq(0,0.75,0.05))
 ```
 
@@ -306,7 +336,8 @@ Here's a look at a linear (green) and a quadratic (orange) trendline.
 
 ```{r echo=FALSE}
 ggplot(aes(x=free.sulfur.dioxide,y=total.sulfur.dioxide),data=rw) + 
-  geom_point(position = "jitter",alpha=0.5)
+  geom_point(position = "jitter",
+             alpha=0.5)
 ```
 
 Again there's a clear trend, but this is rather obvious since the two axes are total and free sulfur dioxide. Total sulfur dioxide consists of the free plus the bound sulfur, and so naturally there's a relationship between the two, most likely displaying some sort of linearity plus noise.
@@ -319,7 +350,8 @@ ggplot(aes(x=residual.sugar,y=density),data=rw) +
 Something seems to be going on here, but the outliers of sugar are messing things up. Let's remove them!
 
 ```{r echo=FALSE}
-ggplot(aes(x=residual.sugar,y=density),data=subset(rw, residual.sugar<quantile(residual.sugar,0.90))) + 
+ggplot(aes(x=residual.sugar,y=density),
+       data=subset(rw, residual.sugar<quantile(residual.sugar,0.90))) + 
   geom_point(position = "jitter")
 ```
 
@@ -332,7 +364,8 @@ cor(rw[,c("residual.sugar","density","quality")])
 
 And here's the 90% with the lowest sugar levels:
 ```{r}
-cor(subset(rw, residual.sugar<quantile(residual.sugar,0.90))[,c("residual.sugar","density","quality")])
+cor(subset(rw, residual.sugar<quantile(residual.sugar,0.90))
+    [,c("residual.sugar","density","quality")])
 ```
 
 
@@ -365,10 +398,14 @@ The strongest relationship was citric and fixed acidity, with a correlation of a
 
 ```{r echo=FALSE, Multivariate_Plots}
 ggplot(aes(x=sulphates,y=alcohol,color= factor(quality)),data=rw) + 
-  geom_point(position="jitter",alpha = 0.7,size = 3) + 
-  scale_x_continuous(limits = c(0.3,1.4),breaks = seq(0.3,1.4,0.1)) + 
-  scale_y_continuous(limits= c(9,14),breaks = seq(9,14,0.5)) + 
-  scale_colour_brewer(palette="Set1")
+  geom_point(position="jitter",
+             alpha = 0.7,
+             size = 3) + 
+  scale_x_continuous(limits = c(0.3,1.4),
+                     breaks = seq(0.3,1.4,0.1)) + 
+  scale_y_continuous(limits= c(9,14),
+                     breaks = seq(9,14,0.5)) + 
+  scale_colour_brewer()
 ```
 
 This plot shows us that in general, the high quality wines have both high sulphate and alcohol, which we knew from before. We also see that there's a tendency for the alcohol level to deviate relatively more than the sulphate when it comes to varying with quality.
@@ -377,7 +414,8 @@ This plot shows us that in general, the high quality wines have both high sulpha
 
 ggplot(aes(x=alcohol,color = factor(round_any(sulphates,0.2))),data=rw) + 
   geom_density(alpha = 0.25) +
-  facet_wrap(factor('quality')) + scale_fill_brewer(palette = "Set1")
+  facet_wrap(factor('quality')) + 
+  scale_color_brewer(palette="Reds")
 ```
 
 This density plot shows us how the alcohol varies within different levels of quality and sulphates. We see how wines in both the ends of the quality scale have mostly low sulphate levels.  
@@ -385,9 +423,11 @@ This density plot shows us how the alcohol varies within different levels of qua
 ```{r echo=FALSE,warnings=FALSE}
 ggplot(aes(x=citric.acid,y=fixed.acidity,color= factor(round_any(volatile.acidity,0.2))),data=rw) + 
   geom_point(position="jitter",alpha = 0.7,size = 3) + 
-  scale_x_continuous(limits = c(0,0.8),breaks = seq(0,0.8,0.1)) + 
-  scale_y_continuous(limits= c(6,16),breaks = seq(6,16,1)) + 
-  scale_colour_brewer(palette="Set1")
+  scale_x_continuous(limits = c(0,0.8),
+                     breaks = seq(0,0.8,0.1)) + 
+  scale_y_continuous(limits= c(6,16),
+                     breaks = seq(6,16,1)) + 
+  scale_colour_brewer(palette="Blues")
 ```
 
 This plot shows the three acidity measurements.
@@ -409,17 +449,27 @@ ggplot(aes(x=pred),data=rw) + geom_histogram(binwidth=0.1)+
 We see that our model mostly places wines in the 4.5 to 7 range, which is not surprising given the distribution of the qualities. Even though our quality is given as a discrete and not continuous variable, the linear regression model gives us a hint of how a wine will score. Let's do a rounding, and have a look at how often we're missing and how much.
 
 ```{r echo=FALSE}
+#Rounding the prediction to compare it with actual quality
 rw["predRounded"] <- round(rw["pred"])
+
+#Finding the difference between the rounded prediction and actual quality
 rw["diff"]<- rw["quality"] - rw["predRounded"]
 
 ggplot(data=rw) + 
-  geom_histogram(aes(x=factor(predRounded),binwidth=1),fill = "black",alpha = 0.5) +
-  geom_histogram(aes(x=factor(quality)),binwidth = 1,fill = "red",alpha = 0.5) + 
+  geom_histogram(aes(x=factor(predRounded),binwidth=1),
+                 fill = "black",
+                 alpha = 0.5) +
+  geom_histogram(aes(x=factor(quality)),
+                 binwidth = 1,
+                 fill = "red",
+                 alpha = 0.5) + 
   xlab("Quality (Actual red, predicted black)") 
 
 
 ggplot(aes(x=factor(diff)),data=rw) + 
-  geom_histogram(binwidth=1,fill="blue",alpha=0.8) +
+  geom_histogram(binwidth=1,
+                 fill="blue",
+                 alpha=0.8) +
   scale_x_discrete(breaks=seq(-3,3,1)) +
   xlab("Difference between actual and predicted quality")
 ```
@@ -431,8 +481,12 @@ rw["five"] <- 5
 rw["diffive"] <- rw["quality"] - rw["five"]
 
 ggplot(data=rw) + 
-  geom_histogram(aes(x=factor(diffive)),fill="blue",alpha=0.8)+
-  geom_histogram(aes(x=factor(diff)),fill="red",alpha=0.8)+
+  geom_histogram(aes(x=factor(diffive)),
+                 fill="blue",
+                 alpha=0.8)+
+  geom_histogram(aes(x=factor(diff)),
+                 fill="red",
+                 alpha=0.8)+
   xlab("Predictor in red, 5 in blue")
 ```
 
@@ -457,40 +511,56 @@ I decided to have a look at a linear model based on alcohol, volatile acidity, s
 ```{r echo=FALSE, warnings=FALSE,Plot_One}
 ggplot(aes(x=citric.acid,y=fixed.acidity,color=quality),data=rw) + 
   geom_point(alpha = 0.7) + 
-  stat_smooth(method="lm", formula= y ~ poly(x,2),color = "red",size = 1,se = FALSE) + 
-  scale_x_continuous(limits=c(0,0.75),breaks=seq(0,0.75,0.1)) + 
+  stat_smooth(method="lm", 
+              formula= y ~ poly(x,2),
+              color = "red",
+              size = 1,
+              se = FALSE) + 
+  scale_x_continuous(limits=c(0,0.75),
+                     breaks=seq(0,0.75,0.1)) + 
   xlab("Citric acid (g /dm^3)") + 
   ylab("Fixed acidity (g/dm^3)") + 
   ggtitle("Fixed acidity vs. citric acid")
 ```
 
 ### Description One
-The relationship between fixed acidity and citric acid seems to follow some sort of quadratic polynomial.
+The relationship between fixed acidity and citric acid seems to follow a quadratic polynomial, with a higher citric acid being related to an even higher fixed acidity. While fixed acidity varies between 6 and 16 $g/dm^3$, the ammount of citric acid varies between 0 and 0.8 $g/dm^3$. As to why the relationship shows the particular non-linear relation, one could speculate that the chemical process resulting in citric acid also produces a larger ammount of other acids.
 
 ### Plot Two
 ```{r echo=FALSE, Plot_Two,warnings=FALSE}
-ggplot(aes(x=factor(quality),y=alcohol),data=rw) + 
-  geom_boxplot(outlier.shape = NA,fill = "grey") +
-  geom_point(position = "jitter",alpha = 0.25,color = "red") + 
+ggplot(aes(x=factor(quality),
+           y=alcohol),
+       data=rw) + 
+  geom_boxplot(outlier.shape = NA,
+               fill = "grey") +
+  geom_point(position = "jitter",
+             alpha = 0.25,
+             color = "red") + 
   ylab("Alcohol (% by volume)") + 
-  xlab("Quality") + ggtitle("Alcohol versus quality")
+  xlab("Quality") + 
+  ggtitle("Alcohol versus quality")
+
 ```
 
 ### Description Two
-All low quality wines have low alcohol levels. All high quality wines have high alcohol levels, increasing from quality five thru 8. 
+All low quality wines have low alcohol levels. All high quality wines have high alcohol levels, increasing from quality five thru 8. The lowest average is found for quality 5 wines, at 9.9%. For quality 8 the average is 12.1. Perhaps the clearest sign of something goin on is the fact that 75% of all quality 8 wines have a higher alcohol percentage than all of the quality 3 wines. As mentioned earlier, this could be due to the age of the wines, which has not been given. Storing wine for a long time tends to increase alcohol. Another possibility is that good wines just tend to have a higher alcohol, or that wine tasters like the taste.
 
 ### Plot Three
-```{r echo=FALSE, Plot_Three,warnings=FALSE}
+```{r echo=FALSE, Plot_Three,warning=FALSE}
 ggplot(aes(x=sulphates,color = factor(quality)),data=rw) + 
-  geom_density(size=1.1,alpha = 0.7) + 
+  geom_density(size=1.1,
+               alpha = 0.7) + 
   scale_fill_brewer(palette = "Set1") + 
-  scale_x_continuous(name = "Sulphates (g/dm^3)", limits = c(0.2,1.3),breaks = seq(0.2,1.3,0.1)) + 
-  scale_colour_brewer(palette="Set1") + 
-  ggtitle("Sulphate per quality") + ylab("Density")
+  scale_x_continuous(name = "Sulphates (g/dm^3)", 
+                     limits = c(0.2,1.3),
+                     breaks = seq(0.2,1.3,0.1)) + 
+  scale_colour_brewer(palette="Blues") + 
+  ggtitle("Sulphate per quality") + 
+  ylab("Density")
 ```
 
 ### Description Three
-This plot shows how the densities of the sulphate curves for each of the different qualities look. Higher quality wines have more sulphate, but also somewhat flatter curves.
+This plot shows how the densities of the sulphate curves for each of the different qualities look. Higher quality wines have more sulphate, but also somewhat flatter curves. The mean difference is relatively big, with quality 7 wines at 0.74 $g/dm^3$ having 29% than quality 3 wnies at 0.57 $g/dm^3$. Sulphates typically go along with strong smells, and so perhaps this correlation is seen because wines rich on sulphate may have a stronger and more complex aroma.
 
 ------
 
