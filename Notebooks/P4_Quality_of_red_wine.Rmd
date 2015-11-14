@@ -207,7 +207,8 @@ Nearly all wines with the higher sugar ammounts are quality 5, 6 or 7. It's easy
 
 ```{r echo=FALSE}
 ggplot(aes(factor(quality),residual.sugar),data=rw) + 
-  geom_boxplot() 
+  geom_boxplot() +
+  scale_y_continuous(limits=c(1,3))
 ```
 
 Looking at the box plot, we do see that qualities 3,4 and 8 have slightly lower means than 5,6 and 7, but nothing major.
@@ -223,7 +224,8 @@ In this plot, we see more of a trend. It looks as if, in general, high quality w
 
 ```{r echo=FALSE}
 ggplot(aes(factor(quality),alcohol),data=rw) + 
-  geom_boxplot() 
+  geom_boxplot() +
+  scale_y_continuous(limits=c(8,14))
 ```
 
 The box plot makes it even more obvious, especially from 5 through 8 there's a higher ammount of alcohol in the better wines. Let's look at the correlations both with and without the lower quality wines.
@@ -247,7 +249,8 @@ It's the same thing with this plot as with the sugar one, the differences we obs
 
 ```{r echo=FALSE}
 ggplot(aes(factor(quality),chlorides),data=rw) + 
-  geom_boxplot() 
+  geom_boxplot() +
+  scale_y_continuous(limits=c(0,0.2))
 ```
 
 
@@ -262,7 +265,8 @@ This has a different distribution than the others, and if we scroll back up to l
 
 ```{r echo=FALSE}
 ggplot(aes(factor(quality),pH),data=rw) + 
-  geom_boxplot() 
+  geom_boxplot() +
+  scale_y_continuous(limits=c(2.8,3.75))
 ```
 
 Looking at the boxplot, there seems to be a trend towards higher quality meaning also lower pH. However, the correlation factor between the two is only -0.0577.
@@ -278,7 +282,8 @@ We see some sort of linear trend again, for example not a single one of the real
 
 ```{r echo=FALSE}
 ggplot(aes(factor(quality),sulphates),data=rw) + 
-  geom_boxplot() 
+  geom_boxplot() +
+  scale_y_continuous(limits=c(0.25,1.3))
 ```
 
 The boxplot tells the same story!
@@ -291,7 +296,8 @@ ggplot(aes(x=quality,y=volatile.acidity),data=rw) +
 
 ```{r echo=FALSE}
 ggplot(aes(factor(quality),volatile.acidity),data=rw) + 
-  geom_boxplot() 
+  geom_boxplot() +
+  scale_y_continuous(limits=c(0.2,1.2))
 ```
 
 ```{r echo=FALSE}
@@ -304,40 +310,50 @@ Here we see that the wines with the highest ammount of fixed acidity in general 
 ```{r echo=FALSE}
 ggplot(aes(x=factor(round_any(fixed.acidity,2.5)),volatile.acidity),data=rw) + 
   geom_boxplot() + 
+  scale_y_continuous(limits=c(0,1)) +
   xlab("fixed.acidity (grouped)")
 ```
 
 
 ```{r echo=FALSE}
-ggplot(aes(x=citric.acid,y=fixed.acidity,color = quality),data=rw) + 
+ggplot(aes(x=citric.acid,
+           y=fixed.acidity,
+           color = factor(quality)),
+           data=rw) + 
   geom_point() + 
   scale_x_continuous(limits=c(0,0.75),
-                     breaks=seq(0,0.75,0.1))
+                     breaks=seq(0,0.75,0.1)) +
+  scale_colour_brewer(palette = "YlOrRd")
 ```
 
 This trend is clearer: there's some relationship between fixed and citric acid. It could be approximately linear, or one could use a polynomial  or exponential function.
 
 ```{r echo=FALSE,message = FALSE}
 
-ggplot(aes(x=citric.acid,y=fixed.acidity,color = quality),data=rw) + 
-  geom_point(alpha = 0.7) + 
+ggplot(aes(x=citric.acid,
+           y=fixed.acidity,
+           color = factor(quality)),
+           data=rw) + 
+  geom_point() + 
+  scale_colour_brewer(palette = "YlOrRd") + 
   stat_smooth(method="lm",
               se = FALSE,
               size=1,color = "green") + 
   stat_smooth(method="lm", 
               formula= y ~ poly(x,2) ,
               se = FALSE,
-              color = "orange",size = 1) + 
+              color = "black",size = 1) + 
   scale_x_continuous(limits=c(0,0.75),breaks=seq(0,0.75,0.05))
 ```
 
 
-Here's a look at a linear (green) and a quadratic (orange) trendline.
+Here's a look at a linear (green) and a quadratic (black) trendline.
 
 ```{r echo=FALSE}
 ggplot(aes(x=free.sulfur.dioxide,y=total.sulfur.dioxide),data=rw) + 
   geom_point(position = "jitter",
-             alpha=0.5)
+             alpha=0.5) + 
+  geom_smooth(method="lm")
 ```
 
 Again there's a clear trend, but this is rather obvious since the two axes are total and free sulfur dioxide. Total sulfur dioxide consists of the free plus the bound sulfur, and so naturally there's a relationship between the two, most likely displaying some sort of linearity plus noise.
@@ -446,7 +462,7 @@ ggplot(aes(x=pred),data=rw) + geom_histogram(binwidth=0.1)+
   scale_x_discrete(breaks=seq(2,9,1)) + xlab ("Predicted quality")
 ```
 
-We see that our model mostly places wines in the 4.5 to 7 range, which is not surprising given the distribution of the qualities. Even though our quality is given as a discrete and not continuous variable, the linear regression model gives us a hint of how a wine will score. Let's do a rounding, and have a look at how often we're missing and how much.
+This histogram shows what quality our linear model predicted for the original wines. We see that our model mostly places wines in the 4.5 to 7 range, which is not surprising given the distribution of the qualities. Even though our quality is given as a discrete and not continuous variable, the linear regression model gives us a hint of how a wine will score. Let's do a rounding, and have a look at how often we're missing and how much.
 
 ```{r echo=FALSE}
 #Rounding the prediction to compare it with actual quality
@@ -455,16 +471,26 @@ rw["predRounded"] <- round(rw["pred"])
 #Finding the difference between the rounded prediction and actual quality
 rw["diff"]<- rw["quality"] - rw["predRounded"]
 
-ggplot(data=rw) + 
-  geom_histogram(aes(x=factor(predRounded),binwidth=1),
-                 fill = "black",
-                 alpha = 0.5) +
-  geom_histogram(aes(x=factor(quality)),
-                 binwidth = 1,
-                 fill = "red",
-                 alpha = 0.5) + 
-  xlab("Quality (Actual red, predicted black)") 
+#Combine new dataframes to plot in same histogram
+linearpreds <- data.frame(rw["predRounded"])
+linearpreds$type<-"Prediction"
+actual <- data.frame(rw["quality"])
+actual$type<-"Wine tasters"
 
+names(linearpreds) <- c("Quality","Type")
+names(actual) <- c("Quality","Type")
+
+combo <- rbind(linearpreds,actual)
+
+
+ggplot(data=combo,
+       aes(x=factor(Quality),fill=Type)) + 
+  geom_histogram(position="dodge") +
+  xlab("Quality") 
+```
+This histogram compares the predicted quality (when the predictions are rounded to the nearest integer), compared to the actual quality given by the wine tasters. 
+
+```{r}
 
 ggplot(aes(x=factor(diff)),data=rw) + 
   geom_histogram(binwidth=1,
@@ -474,23 +500,29 @@ ggplot(aes(x=factor(diff)),data=rw) +
   xlab("Difference between actual and predicted quality")
 ```
 
-This doesn't look that bad, but remember that the distribution is already pretty even. Let's have a look at how the predictor quality = 5 performs.
+Here, I've taken the difference between the prediction and the actual quality. This doesn't look that bad, we have more zeroes than anything else, but remember that the distribution is already pretty even. Let's have a look at how the predictor quality = 5 performs.
 
 ```{r echo=FALSE}
 rw["five"] <- 5
 rw["diffive"] <- rw["quality"] - rw["five"]
 
-ggplot(data=rw) + 
-  geom_histogram(aes(x=factor(diffive)),
-                 fill="blue",
-                 alpha=0.8)+
-  geom_histogram(aes(x=factor(diff)),
-                 fill="red",
-                 alpha=0.8)+
-  xlab("Predictor in red, 5 in blue")
+lp <- data.frame(rw["diff"])
+lp$type<-"Prediction"
+five <- data.frame(rw["diffive"])
+five$type<-"Default to 5"
+
+names(lp) <- c("Difference","Type")
+names(five) <- c("Difference","Type")
+
+diffs <- rbind(lp,five)
+
+ggplot(data=diffs,
+       aes(x=factor(Difference),fill=Type)) + 
+  geom_histogram(position="dodge") +
+  xlab("Quality") 
 ```
 
-As we can see, the difference isn't huge. 
+The blue color indicates the count of wines that were assigned the correct quality by the rounded linear prediction. The red color indicates the count of wines that were assigned the correct quality by the naive prediction that all wines are quality 5. It's clear that the linear predictor has more correct predictions, but the difference here isn't huge.
 
 
 # Multivariate Analysis
@@ -509,11 +541,15 @@ I decided to have a look at a linear model based on alcohol, volatile acidity, s
 
 ### Plot One
 ```{r echo=FALSE, warnings=FALSE,Plot_One}
-ggplot(aes(x=citric.acid,y=fixed.acidity,color=quality),data=rw) + 
-  geom_point(alpha = 0.7) + 
+ggplot(aes(x=citric.acid,
+           y=fixed.acidity,
+           color = factor(quality)),
+           data=rw) + 
+  geom_point() + 
+  scale_colour_brewer(palette = "YlOrRd") + 
   stat_smooth(method="lm", 
               formula= y ~ poly(x,2),
-              color = "red",
+              color = "black",
               size = 1,
               se = FALSE) + 
   scale_x_continuous(limits=c(0,0.75),
